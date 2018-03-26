@@ -56,6 +56,7 @@ def write_to_es(newrelic_metric, tenant):
         es_index = 'metrics-' + tenant
         es_doc_type = 'newrelic-synthetics'
         es_doc_id = get_id(newrelic_metric)
+        newrelic_metric['value'] = newrelic_metric.get('duration')
         enrich_with_location_coordinates(newrelic_metric)
         es.index(id=es_doc_id, index=es_index, doc_type=es_doc_type, body=newrelic_metric)
         print('process: write to es | id: %s | index: %s | status: successful' % (es_doc_id, es_index))
